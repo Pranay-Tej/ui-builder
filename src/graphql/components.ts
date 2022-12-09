@@ -56,3 +56,27 @@ export const GetParagraphByPk = gql`
     }
   }
 `;
+
+export const UpdateHeadingByPk = gql`
+  mutation UpdateHeadingByPk($id: uuid!, $content: String!) {
+    update_headings_by_pk(
+      pk_columns: { id: $id }
+      _set: { content: $content }
+    ) {
+      content
+      id
+    }
+  }
+`;
+
+export const UpdateParagraphByPk = gql`
+  mutation UpdateParagraphByPk($id: uuid!, $content: String!) {
+    update_paragraphs_by_pk(
+      pk_columns: { id: $id }
+      _set: { content: $content }
+    ) {
+      content
+      id
+    }
+  }
+`;

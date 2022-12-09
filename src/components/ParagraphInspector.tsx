@@ -1,13 +1,15 @@
 import { BASE_URL } from "@/constants/app.constants";
 import { REACT_QUERY_KEYS } from "@/constants/react-query-keys.contants";
 import { useEditorContext } from "@/context/EditorContext";
-import { GetParagraphByPk } from "@/graphql/components";
-import { useQuery } from "@tanstack/react-query";
+import { GetParagraphByPk, UpdateParagraphByPk } from "@/graphql/components";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import request from "graphql-request";
 import { FC, memo, useState } from "react";
 
 const ParagraphInspector: FC = () => {
-  const { selectedComponentId: id } = useEditorContext();
+  const queryClient = useQueryClient();
+
+  const { selectedComponentId: id, cancel } = useEditorContext();
 
   const [content, setContent] = useState<string>("");
 
@@ -25,17 +27,48 @@ const ParagraphInspector: FC = () => {
     enabled: id !== undefined,
   });
 
+  const updateParagraphMutation = useMutation({
+    mutationFn: () => {
+      return request(BASE_URL, UpdateParagraphByPk, {
+        id,
+        content,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries([REACT_QUERY_KEYS.GetParagraphByPk, id]);
+    },
+  });
+
   return (
-    <input
-      type="text"
-      value={content}
-      onChange={(e) => {
-        setContent(e.target.value);
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        updateParagraphMutation.mutate();
       }}
-      onBlur={() => {
-        console.log("blur");
-      }}
-    />
+    >
+      <button type="submit" disabled={updateParagraphMutation.isLoading}>
+        Save
+      </button>
+      <button
+        type="button"
+        onClick={() => {
+          cancel();
+        }}
+      >
+        Cancel
+      </button>
+
+      <input
+        type="text"
+        value={content}
+        onChange={(e) => {
+          setContent(e.target.value);
+        }}
+        // onBlur={() => {
+        //   updateParagraphMutation.mutate();
+        // }}
+      />
+    </form>
   );
 };
 

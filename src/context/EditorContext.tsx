@@ -12,14 +12,23 @@ interface ICartContext {
   selectedComponentType: string | undefined;
   setSelectedComponentId: (id: string) => void;
   setSelectedComponentType: (type: ComponentType) => void;
+  cancel: () => void;
 }
 
 const EditorContext = createContext({} as ICartContext);
 
 export const EditorContextProvider: FC<PropsWithChildren> = (props) => {
-  const [selectedComponentId, setSelectedComponentId] = useState<string>();
-  const [selectedComponentType, setSelectedComponentType] =
-    useState<ComponentType>();
+  const [selectedComponentId, setSelectedComponentId] = useState<
+    string | undefined
+  >();
+  const [selectedComponentType, setSelectedComponentType] = useState<
+    ComponentType | undefined
+  >();
+
+  const cancel = () => {
+    setSelectedComponentId(undefined);
+    setSelectedComponentType(undefined);
+  };
 
   return (
     <EditorContext.Provider
@@ -28,6 +37,7 @@ export const EditorContextProvider: FC<PropsWithChildren> = (props) => {
         selectedComponentType,
         setSelectedComponentId,
         setSelectedComponentType,
+        cancel,
       }}
     >
       {props.children}
