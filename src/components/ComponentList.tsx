@@ -1,33 +1,21 @@
-import { Component, ComponentTypes } from "../types/Component";
+import { ComponentType } from "@/types/Component.types";
 
 const ComponentList: React.FC = () => {
-  const componentList: Component[] = [
-    {
-      type: ComponentTypes.H1,
-      properties: {
-        content: "Heading",
-      },
-    },
-    {
-      type: ComponentTypes.P,
-      properties: {
-        content: "Text",
-      },
-    },
-  ];
+  const componentList: ComponentType[] = [ComponentType.H1, ComponentType.P];
 
   return (
     <>
       <ul>
-        {componentList.map((component) => (
+        {componentList.map((componentType) => (
           <li
+            key={componentType}
             draggable
             style={{ cursor: "grab", padding: "0.5em" }}
             onDragStart={(e) => {
-              e.dataTransfer.setData("text/plain", JSON.stringify(component));
+              e.dataTransfer.setData("text/plain", componentType);
             }}
           >
-            {component.type}
+            {componentType}
           </li>
         ))}
       </ul>

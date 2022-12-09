@@ -1,7 +1,20 @@
-const Paragraph: React.FC<{ content: string }> = (props) => {
-  const { content } = props;
+import { memo, useState } from "react";
 
-  return <p>{content}</p>;
+const Paragraph: React.FC<{ id: any }> = ({ id }) => {
+  const [content, setContent] = useState<string>("Para");
+
+  return (
+    <p
+    // contentEditable
+    // onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
+    //   // console.log(e);
+    //   setContent(e.currentTarget.innerText);
+    // }}
+    >
+      {content}
+    </p>
+  );
 };
 
-export default Paragraph;
+// export default Paragraph;
+export default memo(Paragraph);

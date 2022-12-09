@@ -1,38 +1,8 @@
 import { Fragment, useState } from "react";
-import { Component, ComponentTypes } from "../types/Component";
-import { componentMapper } from "../utils/ComponentMapper";
+import { Component, ComponentType } from "@/types/Component.types";
+import { ComponentMapper } from "@/components/ComponentMapper";
 
 const Builder: React.FC = () => {
-  //   const { content } = props;
-
-  // const config = {
-  //   components: [
-  //     {
-  //       type: ComponentTypes.H1,
-  //       properties: {
-  //         content: "Some Text",
-  //       },
-  //     },
-  //     {
-  //       type: ComponentTypes.H1,
-  //       properties: {
-  //         content: "Other Text",
-  //       },
-  //     },
-  //     {
-  //       type: ComponentTypes.P,
-  //       properties: {
-  //         content: "Data for paragraph",
-  //       },
-  //     },
-  //     {
-  //       type: ComponentTypes.P,
-  //       properties: {
-  //         content: "Some more content",
-  //       },
-  //     },
-  //   ],
-  // };
   const [componentList, setComponentList] = useState<Component[]>([]);
 
   return (
@@ -40,17 +10,20 @@ const Builder: React.FC = () => {
       style={{ border: "1px solid white", minHeight: "200px" }}
       onDrop={(e) => {
         e.preventDefault();
-        const data = e.dataTransfer.getData("text/plain");
+        const data = e.dataTransfer.getData("text/plain") as ComponentType;
         console.log(data);
-        setComponentList((prev) => [...prev, JSON.parse(data)]);
+        setComponentList((prev) => [
+          ...prev,
+          { type: data, id: Math.random().toString() },
+        ]);
       }}
       onDragOver={(e) => {
         e.preventDefault();
         e.dataTransfer.dropEffect = "move";
       }}
     >
-      {componentList.map((component, index) => (
-        <Fragment key={index}>{componentMapper(component)}</Fragment>
+      {componentList.map((component) => (
+        <Fragment key={component.id}>{ComponentMapper(component)}</Fragment>
       ))}
     </div>
   );
