@@ -1,6 +1,5 @@
-import { Fragment } from "react";
 import { Component, ComponentType } from "@/types/Component.types";
-import { ComponentMapper } from "@/components/ComponentMapper";
+import ComponentMapper from "@/components/ComponentMapper";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { REACT_QUERY_KEYS } from "@/constants/react-query-keys.contants";
 import request from "graphql-request";
@@ -43,7 +42,12 @@ const Builder: React.FC = () => {
 
   return (
     <div
-      style={{ border: "1px solid white", minHeight: "200px" }}
+      style={{
+        border: "1px solid white",
+        minHeight: "200px",
+        display: "grid",
+        gap: "2em",
+      }}
       onDrop={(e) => {
         e.preventDefault();
         const data = e.dataTransfer.getData("text/plain") as ComponentType;
@@ -62,7 +66,7 @@ const Builder: React.FC = () => {
     >
       {componentList &&
         componentList.map((component) => (
-          <Fragment key={component.id}>{ComponentMapper(component)}</Fragment>
+          <ComponentMapper key={component.id} {...component} />
         ))}
     </div>
   );

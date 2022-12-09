@@ -30,3 +30,11 @@ export const InsertParagraphOne = gql`
     }
   }
 `;
+
+export const DeleteComponentByPk = gql`
+  mutation DeleteComponentByPk($id: uuid!) {
+    delete_components_by_pk(id: $id) {
+      id
+    }
+  }
+`;
