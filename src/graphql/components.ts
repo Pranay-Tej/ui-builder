@@ -38,3 +38,21 @@ export const DeleteComponentByPk = gql`
     }
   }
 `;
+
+export const GetHeadingByPk = gql`
+  query GetHeadingByPk($id: uuid!) {
+    headings_by_pk(id: $id) {
+      content
+      id
+    }
+  }
+`;
+
+export const GetParagraphByPk = gql`
+  query GetParagraphByPk($id: uuid!) {
+    paragraphs_by_pk(id: $id) {
+      content
+      id
+    }
+  }
+`;
