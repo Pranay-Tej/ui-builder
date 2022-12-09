@@ -1,13 +1,19 @@
 import { Fragment } from "react";
 import { Component, ComponentType } from "@/types/Component.types";
 import { ComponentMapper } from "@/components/ComponentMapper";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { REACT_QUERY_KEYS } from "@/constants/react-query-keys.contants";
 import request from "graphql-request";
 import { BASE_URL } from "@/constants/app.constants";
-import { GetComponents } from "@/graphql/components";
+import {
+  GetComponents,
+  InsertHeadingOne,
+  InsertParagraphOne,
+} from "@/graphql/components";
 
 const Builder: React.FC = () => {
+  const queryClient = useQueryClient();
+
   const { data: componentList } = useQuery({
     queryKey: [REACT_QUERY_KEYS.GetComponents],
     queryFn: async () => {
@@ -17,6 +23,24 @@ const Builder: React.FC = () => {
     onError: (err) => console.error(err),
   });
 
+  const insertHeadingMutation = useMutation({
+    mutationFn: () => {
+      return request(BASE_URL, InsertHeadingOne);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries([REACT_QUERY_KEYS.GetComponents]);
+    },
+  });
+
+  const InsertParagraphMutation = useMutation({
+    mutationFn: () => {
+      return request(BASE_URL, InsertParagraphOne);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries([REACT_QUERY_KEYS.GetComponents]);
+    },
+  });
+
   return (
     <div
       style={{ border: "1px solid white", minHeight: "200px" }}
@@ -24,6 +48,12 @@ const Builder: React.FC = () => {
         e.preventDefault();
         const data = e.dataTransfer.getData("text/plain") as ComponentType;
         console.log(data);
+        if (data === ComponentType.H1) {
+          insertHeadingMutation.mutate();
+        }
+        if (data === ComponentType.P) {
+          InsertParagraphMutation.mutate();
+        }
       }}
       onDragOver={(e) => {
         e.preventDefault();
