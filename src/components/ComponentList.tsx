@@ -1,6 +1,7 @@
 import { ComponentType } from "@/types/Component.types";
+import { FC } from "react";
 
-const ComponentList: React.FC = () => {
+const ComponentList: FC = () => {
   const componentList: ComponentType[] = [ComponentType.H1, ComponentType.P];
 
   return (

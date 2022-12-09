@@ -9,8 +9,9 @@ import {
   InsertHeadingOne,
   InsertParagraphOne,
 } from "@/graphql/components";
+import { FC } from "react";
 
-const Builder: React.FC = () => {
+const Builder: FC = () => {
   const queryClient = useQueryClient();
 
   const { data: componentList } = useQuery({

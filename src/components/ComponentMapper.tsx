@@ -1,4 +1,4 @@
-import { cloneElement, memo } from "react";
+import { cloneElement, FC, memo } from "react";
 import { Component } from "@/types/Component.types";
 import { ComponentType } from "@/types/Component.types";
 import Heading from "@/components/Heading";
@@ -8,14 +8,17 @@ import { BASE_URL } from "@/constants/app.constants";
 import request from "graphql-request";
 import { REACT_QUERY_KEYS } from "@/constants/react-query-keys.contants";
 import { DeleteComponentByPk } from "@/graphql/components";
+import { useEditorContext } from "@/context/EditorContext";
 
 const map = new Map();
 map.set(ComponentType.H1, <Heading id="" />);
 map.set(ComponentType.P, <Paragraph id="" />);
 
-const ComponentMapper: React.FC<Component> = (props) => {
+const ComponentMapper: FC<Component> = (props) => {
   const { type, id } = props;
   const queryClient = useQueryClient();
+  const { setSelectedComponentId, setSelectedComponentType } =
+    useEditorContext();
   //   const map = {
   //     COMPONENT.H1: <Heading />,
   //     COMPONENT.P: <Paragraph />
@@ -37,12 +40,20 @@ const ComponentMapper: React.FC<Component> = (props) => {
   //   return cloneElement(<Paragraph {...component.properties} />);
   // }
   //   console.log(cloneElement(map.get(component.type), component.properties));
-  // const Comp = map.get(component.type);
+
   return (
-    <div>
+    <div
+      style={{ cursor: "pointer" }}
+      onClick={(e) => {
+        e.stopPropagation();
+        setSelectedComponentId(id);
+        setSelectedComponentType(type);
+      }}
+    >
       <button
         type="button"
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           DeleteComponentByPkMutation.mutate(id);
         }}
       >
