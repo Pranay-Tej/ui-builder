@@ -1,9 +1,21 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { Component, ComponentType } from "@/types/Component.types";
 import { ComponentMapper } from "@/components/ComponentMapper";
+import { useQuery } from "@tanstack/react-query";
+import { REACT_QUERY_KEYS } from "@/constants/react-query-keys.contants";
+import request from "graphql-request";
+import { BASE_URL } from "@/constants/app.constants";
+import { GetComponents } from "@/graphql/components";
 
 const Builder: React.FC = () => {
-  const [componentList, setComponentList] = useState<Component[]>([]);
+  const { data: componentList } = useQuery({
+    queryKey: [REACT_QUERY_KEYS.GetComponents],
+    queryFn: async () => {
+      const data = await request(BASE_URL, GetComponents);
+      return data?.components as Component[];
+    },
+    onError: (err) => console.error(err),
+  });
 
   return (
     <div
@@ -12,19 +24,16 @@ const Builder: React.FC = () => {
         e.preventDefault();
         const data = e.dataTransfer.getData("text/plain") as ComponentType;
         console.log(data);
-        setComponentList((prev) => [
-          ...prev,
-          { type: data, id: Math.random().toString() },
-        ]);
       }}
       onDragOver={(e) => {
         e.preventDefault();
         e.dataTransfer.dropEffect = "move";
       }}
     >
-      {componentList.map((component) => (
-        <Fragment key={component.id}>{ComponentMapper(component)}</Fragment>
-      ))}
+      {componentList &&
+        componentList.map((component) => (
+          <Fragment key={component.id}>{ComponentMapper(component)}</Fragment>
+        ))}
     </div>
   );
 };

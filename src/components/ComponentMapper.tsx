@@ -1,4 +1,4 @@
-import { ReactNode, cloneElement, memo } from "react";
+import { ReactNode, cloneElement } from "react";
 import { Component } from "@/types/Component.types";
 import { ComponentType } from "@/types/Component.types";
 import Heading from "@/components/Heading";
@@ -23,7 +23,7 @@ export const ComponentMapper = (component: Component): ReactNode => {
   //   console.log(cloneElement(map.get(component.type), component.properties));
   // const Comp = map.get(component.type);
   return cloneElement(map.get(component.type), {
-    id: component.id ?? Math.random().toString(),
+    id: component.id,
   });
   // return cloneElement(map.get(component.type), component.properties);
 };
