@@ -9,9 +9,13 @@ map.set(ComponentType.H1, <HeadingInspector />);
 map.set(ComponentType.P, <ParagraphInspector />);
 
 const InspectorMapper: FC = () => {
-  const { selectedComponentType } = useEditorContext();
+  const { selectedComponentType, selectedComponentId } = useEditorContext();
   return (
-    <>{selectedComponentType && cloneElement(map.get(selectedComponentType))}</>
+    <>
+      {selectedComponentId &&
+        selectedComponentType &&
+        cloneElement(map.get(selectedComponentType))}
+    </>
   );
 };
 

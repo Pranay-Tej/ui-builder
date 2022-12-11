@@ -2,6 +2,7 @@ import { BASE_URL } from "@/constants/app.constants";
 import { REACT_QUERY_KEYS } from "@/constants/react-query-keys.contants";
 import { useEditorContext } from "@/context/EditorContext";
 import { GetHeadingByPk, UpdateHeadingByPk } from "@/graphql/components";
+import { Button, TextInput } from "@mantine/core";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import request from "graphql-request";
 import { FC, memo, useState } from "react";
@@ -46,19 +47,28 @@ const HeadingInspector: FC = () => {
         updateHeadingMutation.mutate();
       }}
     >
-      <button type="submit" disabled={updateHeadingMutation.isLoading}>
+      <Button
+        variant="light"
+        type="submit"
+        loading={updateHeadingMutation.isLoading}
+      >
         Save
-      </button>
-      <button
+      </Button>
+
+      <Button
+        variant="subtle"
         type="button"
         onClick={() => {
           cancel();
         }}
+        disabled={updateHeadingMutation.isLoading}
       >
         Cancel
-      </button>
+      </Button>
 
-      <input
+      <TextInput
+        placeholder="Content"
+        label="Content"
         type="text"
         value={content}
         onChange={(e) => {

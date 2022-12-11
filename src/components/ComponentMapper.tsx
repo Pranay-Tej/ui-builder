@@ -9,6 +9,8 @@ import request from "graphql-request";
 import { REACT_QUERY_KEYS } from "@/constants/react-query-keys.contants";
 import { DeleteComponentByPk } from "@/graphql/components";
 import { useEditorContext } from "@/context/EditorContext";
+import { ActionIcon } from "@mantine/core";
+import { Icon } from "@iconify/react";
 
 const map = new Map();
 map.set(ComponentType.H1, <Heading id="" />);
@@ -17,14 +19,18 @@ map.set(ComponentType.P, <Paragraph id="" />);
 const ComponentMapper: FC<Component> = (props) => {
   const { type, id } = props;
   const queryClient = useQueryClient();
-  const { setSelectedComponentId, setSelectedComponentType } =
-    useEditorContext();
+  const {
+    selectedComponentId,
+    setSelectedComponentId,
+    setSelectedComponentType,
+    cancel,
+  } = useEditorContext();
   //   const map = {
   //     COMPONENT.H1: <Heading />,
   //     COMPONENT.P: <Paragraph />
   //   };
 
-  const DeleteComponentByPkMutation = useMutation({
+  const deleteComponentByPkMutation = useMutation({
     mutationFn: (id: string) => {
       return request(BASE_URL, DeleteComponentByPk, { id });
     },
@@ -43,22 +49,29 @@ const ComponentMapper: FC<Component> = (props) => {
 
   return (
     <div
-      style={{ cursor: "pointer" }}
+      style={{
+        cursor: "pointer",
+        border: `${id === selectedComponentId ? "1px dotted black" : ""}`,
+      }}
       onClick={(e) => {
         e.stopPropagation();
         setSelectedComponentId(id);
         setSelectedComponentType(type);
       }}
     >
-      <button
+      <ActionIcon
         type="button"
         onClick={(e) => {
           e.stopPropagation();
-          DeleteComponentByPkMutation.mutate(id);
+          if (id === selectedComponentId) {
+            cancel();
+          }
+          deleteComponentByPkMutation.mutate(id);
         }}
+        loading={deleteComponentByPkMutation.isLoading}
       >
-        ❌
-      </button>
+        <Icon icon="carbon:close" style={{ color: "hsl(0, 50%, 40%)" }} />
+      </ActionIcon>
 
       {cloneElement(map.get(type), {
         id: id,

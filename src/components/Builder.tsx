@@ -44,10 +44,11 @@ const Builder: FC = () => {
   return (
     <div
       style={{
-        border: "1px solid white",
+        border: "1px dotted black",
         minHeight: "200px",
         display: "grid",
         gap: "2em",
+        padding: "1em",
       }}
       onDrop={(e) => {
         e.preventDefault();

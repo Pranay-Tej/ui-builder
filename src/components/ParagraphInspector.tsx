@@ -2,6 +2,7 @@ import { BASE_URL } from "@/constants/app.constants";
 import { REACT_QUERY_KEYS } from "@/constants/react-query-keys.contants";
 import { useEditorContext } from "@/context/EditorContext";
 import { GetParagraphByPk, UpdateParagraphByPk } from "@/graphql/components";
+import { Button, TextInput } from "@mantine/core";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import request from "graphql-request";
 import { FC, memo, useState } from "react";
@@ -46,19 +47,26 @@ const ParagraphInspector: FC = () => {
         updateParagraphMutation.mutate();
       }}
     >
-      <button type="submit" disabled={updateParagraphMutation.isLoading}>
+      <Button
+        variant="light"
+        type="submit"
+        disabled={updateParagraphMutation.isLoading}
+      >
         Save
-      </button>
-      <button
+      </Button>
+      <Button
+        variant="subtle"
         type="button"
         onClick={() => {
           cancel();
         }}
       >
         Cancel
-      </button>
+      </Button>
 
-      <input
+      <TextInput
+        placeholder="Content"
+        label="Content"
         type="text"
         value={content}
         onChange={(e) => {
