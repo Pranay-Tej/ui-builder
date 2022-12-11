@@ -13,7 +13,7 @@ const ComponentList: FC = () => {
             draggable
             style={{ cursor: "grab", padding: "0.5em" }}
             onDragStart={(e) => {
-              e.dataTransfer.setData("text/plain", componentType);
+              e.dataTransfer.setData("drag-data", componentType);
             }}
           >
             {componentType}

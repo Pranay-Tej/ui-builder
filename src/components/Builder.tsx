@@ -51,7 +51,7 @@ const Builder: FC = () => {
       }}
       onDrop={(e) => {
         e.preventDefault();
-        const data = e.dataTransfer.getData("text/plain") as ComponentType;
+        const data = e.dataTransfer.getData("drag-data") as ComponentType;
         console.log(data);
         if (data === ComponentType.H1) {
           insertHeadingMutation.mutate();
