@@ -11,10 +11,12 @@ import { DeleteComponentByPk } from "@/graphql/components";
 import { useEditorContext } from "@/context/EditorContext";
 import { ActionIcon } from "@mantine/core";
 import { Icon } from "@iconify/react";
+import ButtonComponent from "./ButtonComponent";
 
 const map = new Map();
 map.set(ComponentType.Heading, <Heading id="" />);
 map.set(ComponentType.Paragraph, <Paragraph id="" />);
+map.set(ComponentType.Button, <ButtonComponent id="" />);
 
 const ComponentMapper: FC<Component> = (props) => {
   const { type, id } = props;

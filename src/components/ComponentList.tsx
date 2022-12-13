@@ -5,6 +5,7 @@ const ComponentList: FC = () => {
   const componentList: ComponentType[] = [
     ComponentType.Heading,
     ComponentType.Paragraph,
+    ComponentType.Button,
   ];
 
   return (

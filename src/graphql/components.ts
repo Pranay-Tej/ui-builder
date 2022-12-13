@@ -31,6 +31,24 @@ export const InsertParagraphOne = gql`
   }
 `;
 
+export const InsertButtonOne = gql`
+  mutation InsertButtonOne(
+    $content: String = "Button"
+    $variant: String = "default"
+    $type: String
+  ) {
+    insert_components_one(
+      object: {
+        button: { data: { content: $content, variant: $variant } }
+        type: $type
+      }
+    ) {
+      id
+      type
+    }
+  }
+`;
+
 export const DeleteComponentByPk = gql`
   mutation DeleteComponentByPk($id: uuid!) {
     delete_components_by_pk(id: $id) {
@@ -57,6 +75,16 @@ export const GetParagraphByPk = gql`
   }
 `;
 
+export const GetButtonByPk = gql`
+  query GetButtonByPk($id: uuid!) {
+    buttons_by_pk(id: $id) {
+      content
+      variant
+      id
+    }
+  }
+`;
+
 export const UpdateHeadingByPk = gql`
   mutation UpdateHeadingByPk($id: uuid!, $content: String!) {
     update_headings_by_pk(
@@ -76,6 +104,19 @@ export const UpdateParagraphByPk = gql`
       _set: { content: $content }
     ) {
       content
+      id
+    }
+  }
+`;
+
+export const UpdateButtonByPk = gql`
+  mutation UpdateButtonByPk($id: uuid!, $content: String!, $variant: String) {
+    update_buttons_by_pk(
+      pk_columns: { id: $id }
+      _set: { content: $content, variant: $variant }
+    ) {
+      content
+      variant
       id
     }
   }

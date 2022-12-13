@@ -6,6 +6,7 @@ import request from "graphql-request";
 import { BASE_URL } from "@/constants/app.constants";
 import {
   GetComponents,
+  InsertButtonOne,
   InsertHeadingOne,
   InsertParagraphOne,
 } from "@/graphql/components";
@@ -45,6 +46,17 @@ const Builder: FC = () => {
     },
   });
 
+  const InsertButtonMutation = useMutation({
+    mutationFn: () => {
+      return request(BASE_URL, InsertButtonOne, {
+        type: ComponentType.Button,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries([REACT_QUERY_KEYS.GetComponents]);
+    },
+  });
+
   return (
     <div
       style={{
@@ -63,6 +75,9 @@ const Builder: FC = () => {
         }
         if (data === ComponentType.Paragraph) {
           InsertParagraphMutation.mutate();
+        }
+        if (data === ComponentType.Button) {
+          InsertButtonMutation.mutate();
         }
       }}
       onDragOver={(e) => {
