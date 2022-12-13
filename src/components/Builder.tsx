@@ -25,7 +25,9 @@ const Builder: FC = () => {
 
   const insertHeadingMutation = useMutation({
     mutationFn: () => {
-      return request(BASE_URL, InsertHeadingOne);
+      return request(BASE_URL, InsertHeadingOne, {
+        type: ComponentType.Heading,
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries([REACT_QUERY_KEYS.GetComponents]);
@@ -34,7 +36,9 @@ const Builder: FC = () => {
 
   const InsertParagraphMutation = useMutation({
     mutationFn: () => {
-      return request(BASE_URL, InsertParagraphOne);
+      return request(BASE_URL, InsertParagraphOne, {
+        type: ComponentType.Paragraph,
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries([REACT_QUERY_KEYS.GetComponents]);
@@ -54,10 +58,10 @@ const Builder: FC = () => {
         e.preventDefault();
         const data = e.dataTransfer.getData("drag-data") as ComponentType;
         console.log(data);
-        if (data === ComponentType.H1) {
+        if (data === ComponentType.Heading) {
           insertHeadingMutation.mutate();
         }
-        if (data === ComponentType.P) {
+        if (data === ComponentType.Paragraph) {
           InsertParagraphMutation.mutate();
         }
       }}

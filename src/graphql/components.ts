@@ -10,9 +10,9 @@ export const GetComponents = gql`
 `;
 
 export const InsertHeadingOne = gql`
-  mutation InsertHeadingOne($content: String = "Heading") {
+  mutation InsertHeadingOne($content: String = "Heading", $type: String) {
     insert_components_one(
-      object: { heading: { data: { content: $content } }, type: "H1" }
+      object: { heading: { data: { content: $content } }, type: $type }
     ) {
       id
       type
@@ -21,9 +21,9 @@ export const InsertHeadingOne = gql`
 `;
 
 export const InsertParagraphOne = gql`
-  mutation InsertParagraphOne($content: String = "Paragraph") {
+  mutation InsertParagraphOne($content: String = "Paragraph", $type: String) {
     insert_components_one(
-      object: { paragraph: { data: { content: $content } }, type: "P" }
+      object: { paragraph: { data: { content: $content } }, type: $type }
     ) {
       id
       type

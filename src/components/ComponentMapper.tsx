@@ -13,8 +13,8 @@ import { ActionIcon } from "@mantine/core";
 import { Icon } from "@iconify/react";
 
 const map = new Map();
-map.set(ComponentType.H1, <Heading id="" />);
-map.set(ComponentType.P, <Paragraph id="" />);
+map.set(ComponentType.Heading, <Heading id="" />);
+map.set(ComponentType.Paragraph, <Paragraph id="" />);
 
 const ComponentMapper: FC<Component> = (props) => {
   const { type, id } = props;

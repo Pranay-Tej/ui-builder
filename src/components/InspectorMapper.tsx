@@ -5,8 +5,8 @@ import HeadingInspector from "./HeadingInspector";
 import ParagraphInspector from "./ParagraphInspector";
 
 const map = new Map();
-map.set(ComponentType.H1, <HeadingInspector />);
-map.set(ComponentType.P, <ParagraphInspector />);
+map.set(ComponentType.Heading, <HeadingInspector />);
+map.set(ComponentType.Paragraph, <ParagraphInspector />);
 
 const InspectorMapper: FC = () => {
   const { selectedComponentType, selectedComponentId } = useEditorContext();
