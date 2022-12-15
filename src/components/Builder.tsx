@@ -1,15 +1,14 @@
-import { Component, ComponentType } from "@/types/Component.types";
 import ComponentMapper from "@/components/ComponentMapper";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { REACT_QUERY_KEYS } from "@/constants/react-query-keys.contants";
-import request from "graphql-request";
-import { BASE_URL } from "@/constants/app.constants";
 import {
   GetComponents,
   InsertButtonOne,
   InsertHeadingOne,
   InsertParagraphOne,
 } from "@/graphql/components";
+import { Component, ComponentType } from "@/types/Component.types";
+import { graphqlClient } from "@/utils/graphqlClient";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FC } from "react";
 
 const Builder: FC = () => {
@@ -18,15 +17,17 @@ const Builder: FC = () => {
   const { data: componentList } = useQuery({
     queryKey: [REACT_QUERY_KEYS.GetComponents],
     queryFn: async () => {
-      const data = await request(BASE_URL, GetComponents);
+      const data = await graphqlClient.request(GetComponents);
       return data?.components as Component[];
     },
-    onError: (err) => console.error(err),
+    onError: (err) => {
+      console.error(err);
+    },
   });
 
   const insertHeadingMutation = useMutation({
     mutationFn: () => {
-      return request(BASE_URL, InsertHeadingOne, {
+      return graphqlClient.request(InsertHeadingOne, {
         type: ComponentType.Heading,
       });
     },
@@ -37,7 +38,7 @@ const Builder: FC = () => {
 
   const InsertParagraphMutation = useMutation({
     mutationFn: () => {
-      return request(BASE_URL, InsertParagraphOne, {
+      return graphqlClient.request(InsertParagraphOne, {
         type: ComponentType.Paragraph,
       });
     },
@@ -48,7 +49,7 @@ const Builder: FC = () => {
 
   const InsertButtonMutation = useMutation({
     mutationFn: () => {
-      return request(BASE_URL, InsertButtonOne, {
+      return graphqlClient.request(InsertButtonOne, {
         type: ComponentType.Button,
       });
     },

@@ -1,10 +1,9 @@
-import { BASE_URL } from "@/constants/app.constants";
 import { REACT_QUERY_KEYS } from "@/constants/react-query-keys.contants";
 import { useEditorContext } from "@/context/EditorContext";
 import { GetParagraphByPk, UpdateParagraphByPk } from "@/graphql/components";
+import { graphqlClient } from "@/utils/graphqlClient";
 import { Button, TextInput } from "@mantine/core";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import request from "graphql-request";
 import { FC, memo, useState } from "react";
 
 const ParagraphInspector: FC = () => {
@@ -17,7 +16,7 @@ const ParagraphInspector: FC = () => {
   useQuery({
     queryKey: [REACT_QUERY_KEYS.GetParagraphByPk, id],
     queryFn: async () => {
-      const data = await request(BASE_URL, GetParagraphByPk, {
+      const data = await graphqlClient.request(GetParagraphByPk, {
         id,
       });
       return data?.paragraphs_by_pk?.content as string;
@@ -30,7 +29,7 @@ const ParagraphInspector: FC = () => {
 
   const updateParagraphMutation = useMutation({
     mutationFn: () => {
-      return request(BASE_URL, UpdateParagraphByPk, {
+      return graphqlClient.request(UpdateParagraphByPk, {
         id,
         content,
       });

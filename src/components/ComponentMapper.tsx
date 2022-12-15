@@ -1,16 +1,14 @@
-import { cloneElement, FC, memo } from "react";
-import { Component } from "@/types/Component.types";
-import { ComponentType } from "@/types/Component.types";
 import Heading from "@/components/Heading";
 import Paragraph from "@/components/Paragraph";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { BASE_URL } from "@/constants/app.constants";
-import request from "graphql-request";
 import { REACT_QUERY_KEYS } from "@/constants/react-query-keys.contants";
-import { DeleteComponentByPk } from "@/graphql/components";
 import { useEditorContext } from "@/context/EditorContext";
-import { ActionIcon } from "@mantine/core";
+import { DeleteComponentByPk } from "@/graphql/components";
+import { Component, ComponentType } from "@/types/Component.types";
+import { graphqlClient } from "@/utils/graphqlClient";
 import { Icon } from "@iconify/react";
+import { ActionIcon } from "@mantine/core";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { cloneElement, FC, memo } from "react";
 import ButtonComponent from "./ButtonComponent";
 
 const map = new Map();
@@ -34,7 +32,7 @@ const ComponentMapper: FC<Component> = (props) => {
 
   const deleteComponentByPkMutation = useMutation({
     mutationFn: (id: string) => {
-      return request(BASE_URL, DeleteComponentByPk, { id });
+      return graphqlClient.request(DeleteComponentByPk, { id });
     },
     onSuccess: () => {
       queryClient.invalidateQueries([REACT_QUERY_KEYS.GetComponents]);

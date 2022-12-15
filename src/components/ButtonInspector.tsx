@@ -1,10 +1,9 @@
-import { BASE_URL } from "@/constants/app.constants";
 import { REACT_QUERY_KEYS } from "@/constants/react-query-keys.contants";
 import { useEditorContext } from "@/context/EditorContext";
 import { GetButtonByPk, UpdateButtonByPk } from "@/graphql/components";
+import { graphqlClient } from "@/utils/graphqlClient";
 import { Button, Select, TextInput } from "@mantine/core";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import request from "graphql-request";
 import { FC, memo, useState } from "react";
 
 const ButtonInspector: FC = () => {
@@ -18,7 +17,7 @@ const ButtonInspector: FC = () => {
   useQuery({
     queryKey: [REACT_QUERY_KEYS.GetButtonByPk, id],
     queryFn: async () => {
-      const data = await request(BASE_URL, GetButtonByPk, {
+      const data = await graphqlClient.request(GetButtonByPk, {
         id,
       });
       return data?.buttons_by_pk as { content: string; variant: string };
@@ -32,7 +31,7 @@ const ButtonInspector: FC = () => {
 
   const updateButtonMutation = useMutation({
     mutationFn: () => {
-      return request(BASE_URL, UpdateButtonByPk, {
+      return graphqlClient.request(UpdateButtonByPk, {
         id,
         content,
         variant,
